@@ -2,9 +2,7 @@ import streamlit as st
 from secret import API_KEY
 import os
 import openai
-from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
