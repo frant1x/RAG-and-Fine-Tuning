@@ -14,12 +14,7 @@ os.environ["OPENAI_API_KEY"] = API_KEY
 
 class RAG:
     def __init__(self):
-        # self.data_folder = "documents/"
         self.persist_directory = "db/"
-        # self.db = self.create_db()
-        # print("Saving your db as pickle file...")
-        # self.db.persist()
-        # print("Saved!")
         self.llm = ChatOpenAI(
             model="gpt-4o-mini",
             temperature=0,
@@ -50,34 +45,6 @@ class RAG:
             key="user_input",
             on_change=self.retriev_data,
         )
-
-    def create_db(self):
-        for filename in os.listdir(self.data_folder):
-            if filename.endswith(".pdf"):
-                print(f"reading {filename}...")
-                # Construct the full path to the PDF file
-                file_path = os.path.join(self.data_folder, filename)
-
-                # Load the PDF document
-                loader = PyPDFLoader(file_path)
-                raw_documents = loader.load()
-
-                # Split the text from the document into chunks
-                text_splitter = CharacterTextSplitter(chunk_size=512, chunk_overlap=64)
-                split_documents = text_splitter.split_documents(raw_documents)
-
-                db = Chroma.from_documents(
-                    split_documents,
-                    OpenAIEmbeddings(
-                        deployment="text-embedding-3-small",
-                        chunk_size=3,
-                        timeout=60,
-                        show_progress_bar=True,
-                        retry_min_seconds=15,
-                    ),
-                    persist_directory=self.persist_directory,
-                )
-        return db
 
     def retriev_data(self):
         # retrieving context from db
